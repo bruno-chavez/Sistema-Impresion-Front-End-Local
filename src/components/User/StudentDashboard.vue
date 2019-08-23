@@ -1,6 +1,6 @@
 <template>
-
     <div class="container" style="align-content: center; margin:0 auto;">
+        <h4>Actualmente te quedan {{pages}} páginas</h4>
         <div class="row">
             <div class="col-md-6">
                 <table class="table">
@@ -20,8 +20,6 @@
             </div>
         </div>
     </div>
-
-
 </template>
 
 <script>
@@ -38,7 +36,8 @@
       },
     data() {
       return {
-        titles: []
+        titles: [],
+        pages: 0
       }
     },
     methods: {
@@ -47,8 +46,11 @@
       }
     },
     async created() {
-      let res = await axios.get(`${process.env.VUE_APP_BACKEND}/file/titles`, {withCredentials: true});
-      this.titles = res.data.titles;
+      let pages = await axios.get(`${process.env.VUE_APP_BACKEND}/student/pages`, {withCredentials: true});
+      this.pages = pages.data.pages;
+
+      let titles = await axios.get(`${process.env.VUE_APP_BACKEND}/file/titles`, {withCredentials: true});
+      this.titles = titles.data.titles;
     }
   }
 </script>
