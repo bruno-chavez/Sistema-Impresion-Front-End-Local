@@ -56,7 +56,7 @@
     },
     async created() {
       this.updatePages();
-      let documents = await axios.get(`${process.env.VUE_APP_BACKEND}/file/titles`, {withCredentials: true});
+      let documents = await axios.get(`${process.env.VUE_APP_BACKEND}/file/info`, {withCredentials: true});
       this.documents = documents.data.documents;
     }
   }
