@@ -1,6 +1,7 @@
 <template>
     <div class="container" style="align-content: center; margin:0 auto;">
-        <h4>Actualmente te quedan {{pages}} páginas</h4>
+        <h4>Actualmente te quedan {{info.pages}} páginas</h4>
+        <h4>Actualmente tienes {{info.docs}} documentos</h4>
         <div class="row">
             <div class="col-md-6">
                 <table class="table">
@@ -16,7 +17,7 @@
                         <td>{{doc.title}}</td>
                         <td>{{doc.pages}}</td>
                         <td>
-                            <mdb-btn v-on:click="showFile(doc.title)" type="button">Imprimir</mdb-btn>
+                            <mdb-btn v-on:click="printFile(doc.title, doc.pages)" type="button">Imprimir</mdb-btn>
                         </td>
                     </tr>
                     </tbody>
@@ -41,16 +42,30 @@
     data() {
       return {
         documents: {},
-        pages: 0
+        info: {
+          pages: 0,
+          docs: 0
+        }
       }
     },
     methods: {
       async updatePages() {
-        let pages = await axios.get(`${process.env.VUE_APP_BACKEND}/student/pages`, {withCredentials: true});
-        this.pages = pages.data.pages;
+        let res = await axios.get(`${process.env.VUE_APP_BACKEND}/student/info`, {withCredentials: true});
+        this.info.pages = res.data.pages;
+        this.info.docs = res.data.docs;
       },
-      async showFile(title) {
-        this.updatePages();
+      async printFile(title, pages) {
+
+        if (this.pages < pages) {
+          alert('No tienes suficientes pagines para imprimir este documento');
+          return
+        }
+
+        if (!window.confirm('Seguro que desea imprimir este documente')) {
+          return
+        }
+
+        await this.updatePages();
         window.open(`${process.env.VUE_APP_BACKEND}/file/fetch/print/${title}`)
       }
     },
