@@ -49,7 +49,8 @@
         if (res.data.message === 'Authenticated') {
           this.$router.push({name: 'userDashboard'})
         } else {
-          console.log(res.data)
+          console.log(res.data);
+          alert('Error en la autenticacion de credenciales')
         }
       }
     }

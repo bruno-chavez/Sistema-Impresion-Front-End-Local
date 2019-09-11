@@ -65,7 +65,7 @@
           return
         }
 
-        await this.updatePages();
+        this.info.pages -= pages;
         window.open(`${process.env.VUE_APP_BACKEND}/file/fetch/print/${title}`)
       }
     },
